@@ -1,26 +1,32 @@
 import React, { useState, useEffect }  from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp, faCircle, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import moment from 'moment/moment';
 
 const Weather = () => {
-    const [search, setSearch] = useState("banning");
+    const [search, setSearch] = useState("tokyo");
     const [data, setData] = useState([]);
     //const [location, setLocation] = useState('');
-    let componentMounted = true;
+  
+    const fetchWeather = async () => {
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search}&units=imperial&appid=a86ac6f164e80a61d42fa9ea208dbe2b`);
+      
+      response.json().then(response => 
+      {      
+        setData(response);
+      })
+    }
   
     useEffect(() => {
-        const fetchWeather = async () => {
-          const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search}&units=imperial&appid=a86ac6f164e80a61d42fa9ea208dbe2b`);
-          if(componentMounted) {
-            setData(await response.json());
-            console.log(data);
-          }
-            return () => {
-              componentMounted = false;
-            }
-        }
-        fetchWeather();
+      fetchWeather();
     }, []);
+    
+    const timezone = data?.timezone; //needs to be converted in minutes 
+    const timezoneInMinutes = timezone / 60;
+    const currTime = moment().utcOffset(timezoneInMinutes).format("h:mm A");
+   //let sunriseHours = new Date(data?.sys?.sunrise * 1000).getHours();
+   //let sunriseMin = new Date(data?.sys?.sunrise * 1000).getMinutes();
+   console.log(currTime);
 
     return (
       <div className='body'>
