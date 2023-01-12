@@ -4,7 +4,7 @@ import { faChevronDown, faChevronUp, faCircle, faMagnifyingGlass } from '@fortaw
 import moment from 'moment/moment';
 
 const Weather = () => {
-    const [search, setSearch] = useState("tokyo");
+    const [search, setSearch] = useState("banning");
     const [data, setData] = useState([]);
     //const [location, setLocation] = useState('');
   
@@ -24,9 +24,14 @@ const Weather = () => {
     const timezone = data?.timezone; //needs to be converted in minutes 
     const timezoneInMinutes = timezone / 60;
     const currTime = moment().utcOffset(timezoneInMinutes).format("h:mm A");
-   //let sunriseHours = new Date(data?.sys?.sunrise * 1000).getHours();
-   //let sunriseMin = new Date(data?.sys?.sunrise * 1000).getMinutes();
-   console.log(currTime);
+
+    // Sunrise
+    const sunriseTime = data?.sys?.sunrise;
+    const sunrise = moment.unix(sunriseTime).utc().add(timezone, 's').format('LT');
+    
+    //Sunset
+    const sunsetTime = data?.sys?.sunset;
+    const sunset = moment.unix(sunsetTime).utc().add(timezone, 's').format('LT');
 
     return (
       <div className='body'>
@@ -55,11 +60,11 @@ const Weather = () => {
           <div className='sun'>
             <div className='sunrise'>
               <p>Sunrise</p>
-              {}  
+              {sunrise}  
             </div>
             <div className='sunset'>
               <p>Sunset</p>
-              {} 
+              {sunset} 
             </div>
   
           </div>

@@ -63,6 +63,10 @@ header {
   font-weight: 300;
 }
 
+.temp h2 {
+  font-size: 1.8rem;
+}
+
 .sun {
   display: flex;
   align-items: center;
