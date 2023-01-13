@@ -2,14 +2,15 @@
 @import url('https://kit.fontawesome.com/3e386613d9.js" crossorigin="anonymous');
 
 :root {
-  --clear-sky: orange;
+  --day-icon: black;
+  --sky: rgb(255, 217, 168);
 }
 
 .body {
   margin: 0;
-  min-height: 110vh;
+  min-height: 100%;
   font-family: 'Lato', sans-serif;
-  background-color: rgb(255, 217, 168);
+  background-color: var(--sky);
   box-sizing: border-box;
 }
 
@@ -25,6 +26,16 @@ header {
   margin-left: -2rem;
 }
 
+.search input {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  outline: 0;
+  border-style: none;
+  text-transform: capitalize;
+  border-radius: 1rem;
+}
+
 .location {
   font-size: 1.5rem;
   letter-spacing: 0.2rem;
@@ -33,9 +44,32 @@ header {
 }
 
 .units {
-  font-size: 1rem;
+  display: flex;
+  text-align: center;
+  justify-content: center;
   letter-spacing: 0.2rem;
+  font-size: 1.2rem;
   font-weight: 400;
+}
+
+.units .imperial {
+  transition: all 1s;
+}
+
+.units .metric {
+  transition: all 1s;
+}
+
+.units .imperial:hover {
+  font-size: 1.5rem;
+  font-size-adjust: 0.1rem;
+  cursor: pointer;
+}
+
+.units .metric:hover {
+  font-size: 1.5rem;
+  font-size-adjust: 0.1rem;
+  cursor: pointer;
 }
 
 .icon {
@@ -48,7 +82,19 @@ header {
 .icon .image {
   height: 10rem;
   width: 10rem;
-  color: var(--clear-sky);
+  color: var(--day-icon);
+}
+
+.weather-des {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.weather-des h1 {
+  text-transform: capitalize;
+  font-weight: 290;
 }
 
 .temp {
