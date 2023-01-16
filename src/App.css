@@ -2,13 +2,18 @@
 @import url('https://kit.fontawesome.com/3e386613d9.js" crossorigin="anonymous');
 
 :root {
-  --day-icon: black;
+  --sky-icon: black;
   --sky: rgb(255, 217, 168);
+}
+
+.dark-theme {
+  --sky-icon: white;
+  --sky: rgb(91, 90, 90);
 }
 
 .body {
   margin: 0;
-  min-height: 100%;
+  min-height: 110vh;
   font-family: 'Lato', sans-serif;
   background-color: var(--sky);
   box-sizing: border-box;
@@ -34,9 +39,14 @@ header {
   border-style: none;
   text-transform: capitalize;
   border-radius: 1rem;
+  width: 10rem;
 }
 
 .location {
+  position: relative;
+  top: 2rem;
+  left: 3rem;
+  align-items: center;
   font-size: 1.5rem;
   letter-spacing: 0.2rem;
   text-transform: uppercase;
@@ -44,6 +54,8 @@ header {
 }
 
 .units {
+  position: relative;
+  top: 2.3rem;
   display: flex;
   text-align: center;
   justify-content: center;
@@ -82,7 +94,7 @@ header {
 .icon .image {
   height: 10rem;
   width: 10rem;
-  color: var(--day-icon);
+  color: var(--sky-icon);
 }
 
 .weather-des {
@@ -118,4 +130,10 @@ header {
   align-items: center;
   justify-content: space-evenly;
   padding: 2rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .search input {
+    width: 28%;
+  }
 }

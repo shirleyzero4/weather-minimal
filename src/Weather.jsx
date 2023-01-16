@@ -1,22 +1,33 @@
 import React, { useState, useEffect }  from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBarsStaggered, faChevronDown, faChevronUp, faCircle, faCloud, faCloudBolt, faCloudMeatball, faCloudMoonRain, faCloudShowersHeavy, faCloudSun, faCloudSunRain, faMagnifyingGlass, faSnowflake } from '@fortawesome/free-solid-svg-icons';
+import { faBarsStaggered, faChevronDown, faChevronUp, faCircle, faCloud, faCloudBolt, faCloudMeatball, faCloudMoonRain, faCloudShowersHeavy, faCloudSun, faCloudSunRain, faMagnifyingGlass, faSnowflake, faUnderline } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment/moment';
+import axios from 'axios';
 
 const Weather = () => {
-    const [search, setSearch] = useState("banning");
+    //const [search, setSearch] = useState('banning');
     const [data, setData] = useState([]);
-    //const [location, setLocation] = useState('');
+    const [location, setLocation] = useState('');
 
-    //const url = `https://api.openweathermap.org/data/2.5/weather?q=${search}&units=imperial&appid=a86ac6f164e80a61d42fa9ea208dbe2b`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=imperial&appid=a86ac6f164e80a61d42fa9ea208dbe2b`;
 
     const fetchWeather = async () => {
-      const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search}&units=imperial&appid=a86ac6f164e80a61d42fa9ea208dbe2b`);
+      const response = await fetch(url);
       
       response.json().then(response => 
       {      
         setData(response);
       })
+    }
+
+    const searchLocation = (e) => {
+      if(e.key === 'Enter') {
+        axios.get(url).then((response) => {
+          setData(response.data)
+          console.log(response.data)
+        })
+        setLocation('')
+      }
     }
 
     useEffect(() => {
@@ -78,12 +89,15 @@ const Weather = () => {
       }
     }
 
+    //Day-Night Setting
+    
+
+
     return (
       <div className='body'>
         <header>
           <div className='search'>
-            <input type='search' placeholder='Enter Location' />
-            <FontAwesomeIcon icon={faMagnifyingGlass} className='icon' />
+            <input value={location} onChange={e => setLocation(e.target.value)} onKeyDown={searchLocation} type='text' placeholder='Enter Location' />
           </div>
           <div className='location'>{data.name}</div>
           <div className='units'>
@@ -96,36 +110,40 @@ const Weather = () => {
             </div>
           </div>
         </header>
-        <div className='main'>
-          <div className='icon'>
-            <FontAwesomeIcon icon={correctIcon(weatherIcon)} className='image' />
-          </div>
-          <div className='weather-des'>
-            <h1>{data.weather ? data.weather[0].description : null}</h1>
-          </div>
-          <div className='temp'>
-            <div className='low-temp'>
-              <FontAwesomeIcon icon={faChevronDown} />
-              {data.main ? <h2>{data.main.temp_min.toFixed()}°</h2> : null} 
+
+          {data.name != undefined &&
+            <div className='main'>
+              <div className='icon'>
+                <FontAwesomeIcon icon={correctIcon(weatherIcon)} className='image' />
+              </div>
+              <div className='weather-des'>
+                <h1>{data.weather ? data.weather[0].description : null}</h1>
+              </div>
+              <div className='temp'>
+                <div className='low-temp'>
+                  <FontAwesomeIcon icon={faChevronDown} />
+                  {data.main ? <h2>{data.main.temp_min.toFixed()}°</h2> : null} 
+                </div>
+                {data.main ? <h1>{data.main.temp.toFixed()}°</h1> : null} 
+                <div className='high-temp'>
+                  <FontAwesomeIcon icon={faChevronUp} />
+                  {data.main ? <h2>{data.main.temp_max.toFixed()}°</h2> : null} 
+                </div>
+              </div>
+              <div className='sun'>
+                <div className='sunrise'>
+                  <h5>Sunrise</h5>
+                  {sunrise}  
+                </div>
+                <div className='sunset'>
+                  <h5>Sunset</h5>
+                  {sunset} 
+                </div>
+      
+              </div>
             </div>
-            {data.main ? <h1>{data.main.temp.toFixed()}°</h1> : null} 
-            <div className='high-temp'>
-              <FontAwesomeIcon icon={faChevronUp} />
-              {data.main ? <h2>{data.main.temp_max.toFixed()}°</h2> : null} 
-            </div>
-          </div>
-          <div className='sun'>
-            <div className='sunrise'>
-              <h5>Sunrise</h5>
-              {sunrise}  
-            </div>
-            <div className='sunset'>
-              <h5>Sunset</h5>
-              {sunset} 
-            </div>
-  
-          </div>
-        </div>
+          }
+        
       </div>
     );
   }
